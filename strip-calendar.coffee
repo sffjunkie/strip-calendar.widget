@@ -1,28 +1,28 @@
+command: "echo 'Lauching StripCalendar...'"
+
 settings =
-    # The locale in which to display day and month names
-    locale: "en-GB"
+    locale: "en-GB" # The locale in which to display day and month names
+    layout: "horizontal" # Orientation, either horizontal or vertical
 
-    # Orientation, either horizontal or vertical
-    layout: "horizontal"
+    offdayIndices: [0, 6] # Sunday & Saturday
+    # offdayIndices: [5, 6] # Friday & Saturday
 
-    # Sunday & Saturday
-    offdayIndices: [0, 6]
+    nineDayFortnightStartDay: null # Don't use a nine day fortnight
+    #nineDayFortnightStartDay: new Date(2017,4,12) # First day off in a nine day fortnight
 
-    # First day off in a nine day fortnight
-    nineDayFortnightStartDay: new Date(2017,4,12)
-
-    fontFamily: "-apple-system"
-    fontSize: "14px"
+    font:
+      family: "-apple-system"
+      size: "14px"
     color:
-        background:
+        bg:
           calendar: "rgba(#000, 0.3)"
           midline: "rgba(#fff, 0.5)"
           midlineToday: "rgba(#0bf, 0.8)"
           midlineOffDay: "rgba(#f77, 0.8)"
           midlineOffToday: "rgba(#fc3, 0.8)"
-        offDay: "rgba(#f77, 1.0)"
+        fg:
+          offDay: "rgba(#f77, 1.0)"
 
-command: "echo 'Lauching LineCalendar...'"
 refreshFrequency: 50000
 displayedDate: null
 
@@ -44,12 +44,12 @@ style: """
 
   .calendar
     padding: 4px
-    font-family: #{settings.fontFamily}
-    font-size: #{settings.fontSize}
+    font-family: #{settings.font.family}
+    font-size: #{settings.font.size}
     font-weight: 500
     color: #fff
     border-radius: 10px
-    background: #{settings.color.background.calendar}
+    background: #{settings.color.bg.calendar}
 
   table
     border-collapse: collapse
@@ -69,8 +69,7 @@ style: """
     display: inline-block
 
   caption .month
-    /* text-transform: uppercase */
-    font-variant: small-caps
+    text-transform: uppercase
     color: rgba(#fff, 0.7)
 
   caption .year
@@ -89,31 +88,31 @@ style: """
     padding-top: 6px
     padding-bottom: 6px
     border-radius: 3px 3px 0 0
-    border-bottom: 3px solid #{settings.color.background.midline}
+    border-bottom: 3px solid #{settings.color.bg.midline}
 
   .calendar.horizontal th.today
-    border-bottom: 3px solid #{settings.color.background.midlineToday}
+    border-bottom: 3px solid #{settings.color.bg.midlineToday}
 
   .calendar.horizontal th.offday
-    border-bottom: 3px solid #{settings.color.background.midlineOffDay}
+    border-bottom: 3px solid #{settings.color.bg.midlineOffDay}
 
   .calendar.horizontal th.offday.today
-    border-bottom: 3px solid #{settings.color.background.midlineOffToday}
+    border-bottom: 3px solid #{settings.color.bg.midlineOffToday}
 
   .calendar.vertical th
     padding-top: 8px
     padding-bottom: 8px
     border-radius: 3px 0 0 3px
-    border-right: 3px solid #{settings.color.background.midline}
+    border-right: 3px solid #{settings.color.bg.midline}
 
   .calendar.vertical th.today
-    border-right: 3px solid #{settings.color.background.midlineToday}
+    border-right: 3px solid #{settings.color.bg.midlineToday}
 
   .calendar.vertical th.offday
-    border-right: 3px solid #{settings.color.background.midlineOffDay}
+    border-right: 3px solid #{settings.color.bg.midlineOffDay}
 
   .calendar.vertical th.offday.today
-    border-right: 3px solid #{settings.color.background.midlineOffToday}
+    border-right: 3px solid #{settings.color.bg.midlineOffToday}
 
   .calendar.horizontal td
     padding-top: 6px
@@ -129,7 +128,7 @@ style: """
     background: rgba(#fff, 0.2)
 
   .offday
-    color: #{settings.color.offDay}
+    color: #{settings.color.fg.offDay}
 """
 
 converticalMilliSecondsToHours: (value) ->
