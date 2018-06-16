@@ -1,6 +1,6 @@
 command: "echo 'Lauching StripCalendar...'"
 
-settings =
+settings = {
     locale: "en-GB" # The locale in which to display day and month names
     layout: "horizontal" # Orientation, either horizontal or vertical
 
@@ -10,18 +10,23 @@ settings =
     nineDayFortnightStartDay: null # Don't use a nine day fortnight
     #nineDayFortnightStartDay: new Date(2017,4,12) # First day off in a nine day fortnight
 
-    font:
+    font: {
       family: "-apple-system"
       size: "14px"
-    color:
-        bg:
-          calendar: "rgba(#000, 0.3)"
-          midline: "rgba(#fff, 0.5)"
-          midlineToday: "rgba(#0bf, 0.8)"
-          midlineOffDay: "rgba(#f77, 0.8)"
-          midlineOffToday: "rgba(#fc3, 0.8)"
-        fg:
-          offDay: "rgba(#f77, 1.0)"
+    }
+    color: {
+      bg: {
+        calendar: "rgba(#000, 0.3)"
+        midline: "rgba(#fff, 0.5)"
+        midlineToday: "rgba(#0bf, 0.8)"
+        midlineOffDay: "rgba(#f77, 0.8)"
+        midlineOffToday: "rgba(#fc3, 0.8)"
+      }
+      fg: {
+        offDay: "rgba(#f77, 1.0)"
+      }
+    }
+}
 
 refreshFrequency: 50000
 displayedDate: null
@@ -143,7 +148,7 @@ toordinal: (date) ->
   return zeroDays + @converticalMilliSecondsToHours(date.getTime())
 
 getLocaleName: (d, locale, type, length) ->
-  return d.toLocaleDateString(locale, {"#{type}": length})
+  return d.toLocaleDateString(locale, { "#{type}": length })
 
 getLocalizedDayNames: () ->
   dates = (new Date(2017, 0, day) for day in [1...8])
@@ -159,7 +164,8 @@ getClassName: (y, m, d, w, today) ->
   isToday = (d == today.getDate())
 
   if settings.nineDayFortnightStartDay isnt null
-    isFridayOff = (((@toordinal(theDate) - @toordinal(settings.nineDayFortnightStartDay)) % 14) == 0)
+    dateDiff = @toordinal(theDate) - @toordinal(settings.nineDayFortnightStartDay)
+    isFridayOff = ((dateDiff % 14) == 0)
   else
     isFridayOff = false
 
@@ -224,11 +230,14 @@ update: (output, domEl) ->
       dayOfMonth = item[0]
       dayOfWeek = item[1]
       className = @getClassName(y, m, dayOfMonth, dayOfWeek, date)
-      tbody_html += "<tr><th class=\"#{className}\">#{dayOfMonth}</th><td class=\"#{className}\">#{dayNames[dayOfWeek]}</td></tr>"
+      tbody_html += """<tr>
+        <th class=\"#{className}\">#{dayOfMonth}</th>
+        <td class=\"#{className}\">#{dayNames[dayOfWeek]}</td>
+      </tr>"""
 
   $(domEl).find("tbody").html(tbody_html)
 
-  year = y.toLocaleString(settings.locale, {useGrouping: false})
+  year = y.toLocaleString(settings.locale, { useGrouping: false })
   $(domEl).find("caption .month").html("#{monthNames[m]}")
   $(domEl).find("caption .year").html("#{year}")
   return
