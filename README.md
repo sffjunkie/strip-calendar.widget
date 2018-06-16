@@ -12,8 +12,8 @@ If you work a nine day fortnight as I do, where I get every other Friday off, th
 
 ### Horizontal Calendar ###
 
-![Horizontal Calendar](calendar-horizontal.jpg)
+![Horizontal Calendar](screenshot.png)
 
 ### Vertical Calendar ###
 
-![Vertical Calendar](calendar-vertical.jpg)
+![Vertical Calendar](calendar-vertical.png)
