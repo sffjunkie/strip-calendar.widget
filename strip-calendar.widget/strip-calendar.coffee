@@ -34,18 +34,6 @@ displayedDate: null
 localizedMonthNames: null
 localizedDayNames: null
 
-render: (output) ->
-  @localizedDayNames = @getLocalizedDayNames()
-  @localizedMonthNames = @getLocalizedMonthNames()
-  return """<div class="calendar #{settings.layout}">
-    <table>
-    <caption><span class='month'></span> <span class='year'></span></caption>
-    <tbody>
-    </tbody>
-    </table>
-    </div>
-    """
-
 style: """
   #{if settings.layout == "horizontal" then "bottom" else "top"}: 10px
   #{if settings.layout == "horizontal" then "right" else "left"}: 10px
@@ -187,6 +175,18 @@ getClassName: (y, m, d, w, today) ->
     classNames = ["ordinary"]
 
   return classNames.join(" ")
+
+render: (output) ->
+  @localizedDayNames = @getLocalizedDayNames()
+  @localizedMonthNames = @getLocalizedMonthNames()
+  return """<div class="calendar #{settings.layout}">
+    <table>
+    <caption><span class='month'></span> <span class='year'></span></caption>
+    <tbody>
+    </tbody>
+    </table>
+    </div>
+    """
 
 update: (output, domEl) ->
   date = new Date()
