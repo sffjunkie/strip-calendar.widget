@@ -205,9 +205,6 @@ update: (output, domEl) ->
   firstWeekDay = firstOfMonth.getDay()
   lastDay = new Date(y, m + 1, 0).getDate()
 
-  # dayNames = @getLocalizedDayNames()
-  # monthNames = @getLocalizedMonthNames()
-
   weekdays = []
   midlines = []
   dates = []
