@@ -176,10 +176,7 @@ getClassName: (y, m, d, w, today) ->
 
   return classNames.join(" ")
 
-render: (output) ->
-  @localizedDayNames = @getLocalizedDayNames()
-  @localizedMonthNames = @getLocalizedMonthNames()
-  return """<div class="calendar #{settings.layout}">
+render: (output) -> """<div class="calendar #{settings.layout}">
     <table>
     <caption><span class='month'></span> <span class='year'></span></caption>
     <tbody>
@@ -187,6 +184,10 @@ render: (output) ->
     </table>
     </div>
     """
+
+afterRender: (domEl) ->
+  @localizedDayNames = @getLocalizedDayNames()
+  @localizedMonthNames = @getLocalizedMonthNames()
 
 update: (output, domEl) ->
   date = new Date()
