@@ -31,8 +31,13 @@ settings = {
 
 refreshFrequency: 50000
 displayedDate: null
+localizedMonthNames: null
+localizedDayNames: null
 
-render: (output) -> """<div class="calendar #{settings.layout}">
+render: (output) ->
+  @localizedDayNames = @getLocalizedDayNames()
+  @localizedMonthNames = @getLocalizedMonthNames()
+  return """<div class="calendar #{settings.layout}">
     <table>
     <caption><span class='month'></span> <span class='year'></span></caption>
     <tbody>
@@ -200,8 +205,8 @@ update: (output, domEl) ->
   firstWeekDay = firstOfMonth.getDay()
   lastDay = new Date(y, m + 1, 0).getDate()
 
-  dayNames = @getLocalizedDayNames()
-  monthNames = @getLocalizedMonthNames()
+  # dayNames = @getLocalizedDayNames()
+  # monthNames = @getLocalizedMonthNames()
 
   weekdays = []
   midlines = []
@@ -214,7 +219,7 @@ update: (output, domEl) ->
     for dayOfMonth in [1..lastDay]
       dayOfWeek = ((dayOfMonth + firstWeekDay - 1) % 7)
       className = @getClassName(y, m, dayOfMonth, dayOfWeek, date)
-      weekdays.push "<th class=\"#{className}\">#{dayNames[dayOfWeek]}</th>"
+      weekdays.push "<th class=\"#{className}\">#{@localizedDayNames[dayOfWeek]}</th>"
 
       dayOfMonth = dayOfMonth.toLocaleString(settings.locale)
       dates.push "<td class=\"#{className}\">#{dayOfMonth}</td>"
@@ -233,12 +238,12 @@ update: (output, domEl) ->
       className = @getClassName(y, m, dayOfMonth, dayOfWeek, date)
       tbody_html += """<tr>
         <th class=\"#{className}\">#{dayOfMonth}</th>
-        <td class=\"#{className}\">#{dayNames[dayOfWeek]}</td>
+        <td class=\"#{className}\">#{@localizedDayNames[dayOfWeek]}</td>
       </tr>"""
 
   $(domEl).find("tbody").html(tbody_html)
 
   year = y.toLocaleString(settings.locale, { useGrouping: false })
-  $(domEl).find("caption .month").html("#{monthNames[m]}")
+  $(domEl).find("caption .month").html("#{@localizedMonthNames[m]}")
   $(domEl).find("caption .year").html("#{year}")
   return
