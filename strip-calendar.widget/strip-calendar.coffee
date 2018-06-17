@@ -14,6 +14,7 @@ settings = {
       family: "-apple-system"
       size: "14px"
     }
+    
     color: {
       bg: {
         calendar: "rgba(#000, 0.3)"
