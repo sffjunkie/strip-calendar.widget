@@ -1,6 +1,6 @@
 ## Strip Calendar ##
 
-An Übersicht widget that displays a calendar in a strip that...
+An [Übersicht widget](http://tracesof.net/uebersicht-widgets/) that displays a calendar in a strip that...
 
 * can be displayed in a horizontal or vertical orientation
 * can present the information in any locale available in Javascript e.g. en-GB, ar-AS etc.
