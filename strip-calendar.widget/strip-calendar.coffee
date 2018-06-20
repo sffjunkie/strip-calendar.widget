@@ -197,8 +197,8 @@
       """
 
   afterRender: (domEl) ->
-    @localizedDayNames = @_getLocalizedDayNames()
-    @localizedMonthNames = @_getLocalizedMonthNames()
+    @_cache.localizedDayNames = @_getLocalizedDayNames()
+    @_cache.localizedMonthNames = @_getLocalizedMonthNames()
 
   update: (output, domEl) ->
     date = new Date()
