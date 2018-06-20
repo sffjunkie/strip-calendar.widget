@@ -240,8 +240,8 @@
       """
     else
       tbody_html = ""
-      c = days.map((e, i) -> [e, daysOfWeek[i]])
-      for item in c
+      daysTransposed = days.map((e, i) -> [e, daysOfWeek[i]])
+      for item in daysTransposed
         dayOfMonth = item[0]
         dayOfWeek = item[1]
         className = @_getClassName(y, m, dayOfMonth, dayOfWeek, date)
