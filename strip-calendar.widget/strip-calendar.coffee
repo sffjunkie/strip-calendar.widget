@@ -33,20 +33,20 @@
   refreshFrequency: 50000
 
   style: """
-    #{if settings.layout == "horizontal" then "bottom" else "top"}: 10px
-    #{if settings.layout == "horizontal" then "right" else "left"}: 10px
+    #{if @settings.layout == "horizontal" then "bottom" else "top"}: 10px
+    #{if @settings.layout == "horizontal" then "right" else "left"}: 10px
 
     .debug
       background: rgba(green, 1)
 
     .calendar
       padding: 4px
-      font-family: #{settings.font.family}
-      font-size: #{settings.font.size}
+      font-family: #{@settings.font.family}
+      font-size: #{@settings.font.size}
       font-weight: 500
       color: #fff
       border-radius: 10px
-      background: #{settings.color.bg.calendar}
+      background: #{@settings.color.bg.calendar}
 
     table
       border-collapse: collapse
@@ -91,16 +91,16 @@
         padding-top: 6px
         padding-bottom: 6px
         border-radius: 3px 3px 0 0
-        border-bottom: 3px solid #{settings.color.bg.midline}
+        border-bottom: 3px solid #{@settings.color.bg.midline}
 
       th.today
-        border-bottom: 3px solid #{settings.color.bg.midlineToday}
+        border-bottom: 3px solid #{@settings.color.bg.midlineToday}
 
       th.offday
-        border-bottom: 3px solid #{settings.color.bg.midlineOffDay}
+        border-bottom: 3px solid #{@settings.color.bg.midlineOffDay}
 
       th.offday.today
-        border-bottom: 3px solid #{settings.color.bg.midlineOffToday}
+        border-bottom: 3px solid #{@settings.color.bg.midlineOffToday}
 
       td
         padding-top: 6px
@@ -112,16 +112,16 @@
         padding-top: 8px
         padding-bottom: 8px
         border-radius: 3px 0 0 3px
-        border-right: 3px solid #{settings.color.bg.midline}
+        border-right: 3px solid #{@settings.color.bg.midline}
 
       th.today
-        border-right: 3px solid #{settings.color.bg.midlineToday}
+        border-right: 3px solid #{@settings.color.bg.midlineToday}
 
       th.offday
-        border-right: 3px solid #{settings.color.bg.midlineOffDay}
+        border-right: 3px solid #{@settings.color.bg.midlineOffDay}
 
       th.offday.today
-        border-right: 3px solid #{settings.color.bg.midlineOffToday}
+        border-right: 3px solid #{@settings.color.bg.midlineOffToday}
 
       td
         padding-left: 6px
@@ -132,7 +132,7 @@
       background: rgba(#fff, 0.2)
 
     .offday
-      color: #{settings.color.fg.offDay}
+      color: #{@settings.color.fg.offDay}
   """
 
   _cache: {
@@ -157,24 +157,24 @@
 
   _getLocalizedDayNames: () ->
     dates = (new Date(2017, 0, day) for day in [1...8])
-    return (@_getLocaleName(d, settings.locale, "weekday", "short") for d in dates)
+    return (@_getLocaleName(d, @settings.locale, "weekday", "short") for d in dates)
 
   _getLocalizedMonthNames: () ->
     dates = (new Date(2017, month, 1) for month in [0...12])
-    return (@_getLocaleName(d, settings.locale, "month", "long") for d in dates)
+    return (@_getLocaleName(d, @settings.locale, "month", "long") for d in dates)
 
   _getClassName: (y, m, d, w, today) ->
     theDate = new Date(y, m, d)
 
     isToday = (d == today.getDate())
 
-    if settings.nineDayFortnightStartDay isnt null
-      _dateDiff = @_toordinal(theDate) - @_toordinal(settings.nineDayFortnightStartDay)
+    if @settings.nineDayFortnightStartDay isnt null
+      _dateDiff = @_toordinal(theDate) - @_toordinal(@settings.nineDayFortnightStartDay)
       isFridayOff = ((dateDiff % 14) == 0)
     else
       isFridayOff = false
 
-    isOffDay = (settings.offdayIndices.indexOf(w) isnt -1) or isFridayOff
+    isOffDay = (@settings.offdayIndices.indexOf(w) isnt -1) or isFridayOff
 
     if isToday or isOffDay
       classNames = []
@@ -187,7 +187,7 @@
 
     return classNames.join(" ")
 
-  render: (output) -> """<div class="calendar #{settings.layout}">
+  render: (output) -> """<div class="calendar #{@settings.layout}">
       <table>
       <caption><span class='month'></span> <span class='year'></span></caption>
       <tbody>
@@ -224,13 +224,13 @@
     days = [1..lastDay]
     daysOfWeek = (((dayOfMonth + firstWeekDay - 1) % 7) for dayOfMonth in days)
 
-    if settings.layout == "horizontal"
+    if @settings.layout == "horizontal"
       for dayOfMonth in [1..lastDay]
         dayOfWeek = ((dayOfMonth + firstWeekDay - 1) % 7)
         className = @_getClassName(y, m, dayOfMonth, dayOfWeek, date)
         weekdays.push "<th class=\"#{className}\">#{@_cache.localizedDayNames[dayOfWeek]}</th>"
 
-        dayOfMonth = dayOfMonth.toLocaleString(settings.locale)
+        dayOfMonth = dayOfMonth.toLocaleString(@settings.locale)
         dates.push "<td class=\"#{className}\">#{dayOfMonth}</td>"
 
       tbody_html = """
@@ -252,7 +252,7 @@
 
     $(domEl).find("tbody").html(tbody_html)
 
-    year = y.toLocaleString(settings.locale, { useGrouping: false })
+    year = y.toLocaleString(@settings.locale, { useGrouping: false })
     $(domEl).find("caption .month").html("#{@_cache.localizedMonthNames[m]}")
     $(domEl).find("caption .year").html("#{year}")
     return
