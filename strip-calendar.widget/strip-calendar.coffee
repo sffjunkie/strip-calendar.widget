@@ -20,7 +20,7 @@
           midline: "rgba(#fff, 0.5)"
           midlineToday: "rgba(#0bf, 0.8)"
           midlineOffDay: "rgba(#f77, 0.8)"
-          midlineOffToday: "rgba(#fc3, 0.8)"
+          midlineOffToday: "rgba(#fc0, 0.8)"
         }
         fg: {
           offDay: "rgba(#f77, 1.0)"
