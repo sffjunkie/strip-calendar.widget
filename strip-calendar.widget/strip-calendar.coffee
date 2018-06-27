@@ -226,7 +226,7 @@
 
     if @settings.layout == "horizontal"
       for dayOfMonth in [1..lastDay]
-        dayOfWeek = daysOfWeek[dayOfMonth]
+        dayOfWeek = daysOfWeek[dayOfMonth - 1]
         className = @_getClassName(y, m, dayOfMonth, dayOfWeek, date)
         weekdays.push "<th class=\"#{className}\">#{@_cache.localizedDayNames[dayOfWeek]}</th>"
 
