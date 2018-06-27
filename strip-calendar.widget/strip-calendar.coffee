@@ -30,7 +30,7 @@
 
   ubersichtWidgetName: 'StripCalendar'
   command: "echo 'Lauching #{ubersichtWidgetName}...'"
-  refreshFrequency: 50000
+  refreshFrequency: '1h'
 
   style: """
     #{if @settings.layout == "horizontal" then "bottom" else "top"}: 10px
