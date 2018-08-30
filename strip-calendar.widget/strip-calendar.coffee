@@ -242,7 +242,7 @@
       tbody_html = ""
       daysTransposed = days.map((e, i) -> [e, daysOfWeek[i]])
       for item in daysTransposed
-        dayOfMonth = item[0]
+        dayOfMonth = item[0].toLocaleString(@settings.locale)
         dayOfWeek = item[1]
         className = @_getClassName(y, m, dayOfMonth, dayOfWeek, date)
         tbody_html += """<tr>
