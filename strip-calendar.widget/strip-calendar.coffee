@@ -8,6 +8,12 @@ settings = {
     nineDayFortnightStartDay: null # Don't use a nine day fortnight
     #nineDayFortnightStartDay: new Date(2017,4,12) # First day off in a nine day fortnight
 
+    payDay: {
+      period: 'w'
+      value: 4
+      base: new Date(2018, 9, 12)
+    }
+
     font: {
       family: "-apple-system"
       size: "14px"
@@ -19,6 +25,7 @@ settings = {
         midlineToday: "rgba(#0bf, 0.8)"
         midlineOffDay: "rgba(#f77, 0.8)"
         midlineOffToday: "rgba(#fc3, 0.8)"
+        payDay: "rgba(#ff0, 0.1)"
       }
       fg: {
         offDay: "rgba(#f77, 1.0)"
@@ -54,6 +61,50 @@ _getLocalizedMonthNames = () ->
   dates = (new Date(2017, month, 1) for month in [0...12])
   return (_getLocaleName(d, settings.locale, "month", "long") for d in dates)
 
+_dayOfWeekIndex = (dayName) ->
+  dayName = dayName.slice(0, 3).toLowerCase()
+  ["sun", "mon", "tue", "wed", "thu", "fri", "sat"].indexOf(dayName)
+
+_isPayDay = (options) ->
+  if settings.payDay is null
+    return false
+
+  options = if typeof options is 'undefined' then {} else options
+  date = if 'date' in options then options['date'] else new Date()
+  period = if 'period' in options then options.period else period
+  value = if 'value' in options then options.value else value
+  base = if 'base' in options then options.base else base
+
+  endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0)
+  payday = switch
+    when period is 'w'
+      abs(_toordinal(base) - _toordinal(date)) % (7 * value) is 0
+
+    when period is 'd'
+      if(typeof value is "number")
+        if(value > 0)
+          pd == value
+        else
+          daysInMonth = endOfMonth.getDate()
+          pd = daysInMonth + value
+      else if(typeof value is "string")
+        if(value[0] == "-")
+          day = value.splice(1)
+          dayIndex = _dayOfWeekIndex(day)
+          lastDayIndex = endOfMonth.getDay()
+          if(lastDayIndex > dayIndex)
+            offset = dayIndex - lastDayIndex
+          else
+            offset = lastDayIndex - dayIndex - 1
+          pd = endOfMonth.getDate() + offset
+        else
+          dayIndex = _dayOfWeekIndex(value)
+          lastDayIndex = endOfMonth.getDay()
+          offset = (7 - (lastDayIndex - dayIndex)) %% 7
+          pd = 1 + offset
+
+      date.getDate() == pd
+
 _getClassName = (y, m, d, w, today) ->
   theDate = new Date(y, m, d)
 
@@ -66,13 +117,16 @@ _getClassName = (y, m, d, w, today) ->
     isFridayOff = false
 
   isOffDay = (settings.offdayIndices.indexOf(w) isnt -1) or isFridayOff
+  isPayDay = _isPayDay()
 
-  if isToday or isOffDay
+  if isToday or isOffDay or isPayDay
     classNames = []
     if isToday
       classNames.push "today"
     if isOffDay
       classNames.push "offday"
+    if isPayDay
+      classNames.push "payday"
   else
     classNames = ["ordinary"]
 
@@ -125,6 +179,9 @@ _getClassName = (y, m, d, w, today) ->
 
     th, td
       text-align: center
+
+      .payday
+        background-color: #{settings.color.bg.payDay}
 
     .calendar.horizontal
       th
