@@ -40,8 +40,8 @@ _toMilliSeconds = (value) ->
 
 _toordinal = (date) ->
   zeroDate = new Date('0000-12-31')
-  _zeroDays = Math.abs(_convertMilliSecondsToHours(zeroDate.getTime()))
-  _return zeroDays + _convertMilliSecondsToHours(date.getTime())
+  zeroDays = Math.abs(_convertMilliSecondsToHours(zeroDate.getTime()))
+  return zeroDays + _convertMilliSecondsToHours(date.getTime())
 
 _getLocaleName = (d, locale, type, length) ->
   return d.toLocaleDateString(locale, { "#{type}": length })
@@ -60,7 +60,7 @@ _getClassName = (y, m, d, w, today) ->
   isToday = (d == today.getDate())
 
   if settings.nineDayFortnightStartDay isnt null
-    _dateDiff = _toordinal(theDate) - _toordinal(settings.nineDayFortnightStartDay)
+    dateDiff = _toordinal(theDate) - _toordinal(settings.nineDayFortnightStartDay)
     isFridayOff = ((dateDiff % 14) == 0)
   else
     isFridayOff = false
